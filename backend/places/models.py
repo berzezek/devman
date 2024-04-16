@@ -2,20 +2,30 @@ from django.db import models
 
 
 class Place(models.Model):
-    title = models.CharField(max_length=255)
-    description_short = models.CharField(max_length=255)
-    description_long = models.TextField()
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    title = models.CharField(verbose_name="Наименование", max_length=255)
+    description_short = models.CharField(
+        verbose_name="Описание короткое", max_length=255
+    )
+    description_long = models.TextField(verbose_name="Описание длинное")
+    latitude = models.FloatField(verbose_name="Широта")
+    longitude = models.FloatField(verbose_name="Долгота")
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        verbose_name = "Место"
+        verbose_name_plural = "Места"
+
 
 class PlaceImage(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="images/")
-    image_number = models.PositiveSmallIntegerField(unique=True)
+    image = models.ImageField(verbose_name="Картика", upload_to="images/")
+    image_number = models.PositiveSmallIntegerField(verbose_name="Позиция", unique=True)
 
     def __str__(self):
         return f"{self.image_number} {self.place.title}"
+
+    class Meta:
+        verbose_name = "Фотография"
+        verbose_name_plural = "Фотографии"

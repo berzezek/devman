@@ -1,5 +1,5 @@
 from django.urls import path
-from afisha.views import index
+from places.views import index
 
 urlpatterns = [
     path("", index),

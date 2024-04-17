@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import Place, PlaceImage
 from django.utils.safestring import mark_safe
 from adminsortable2.admin import SortableTabularInline, SortableAdminMixin
+from tinymce.widgets import TinyMCE
+from django.db import models
 
 
 class PlaceImageTabularInline(SortableTabularInline):
@@ -25,3 +27,7 @@ class PlaceImageTabularInline(SortableTabularInline):
 class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
     fields = ("title", "description_short", "description_long", "latitude", "longitude")
     inlines = [PlaceImageTabularInline]
+
+    formfield_overrides = {
+        models.TextField: {'widget': TinyMCE()}
+    }

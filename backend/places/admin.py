@@ -1,9 +1,10 @@
-from django.contrib import admin
-from .models import Place, PlaceImage
-from django.utils.safestring import mark_safe
 from adminsortable2.admin import SortableTabularInline, SortableAdminMixin
-from tinymce.widgets import TinyMCE
 from django.db import models
+from django.contrib import admin
+from django.utils.html import format_html
+from tinymce.widgets import TinyMCE
+
+from places.models import Place, PlaceImage
 
 
 class PlaceImageTabularInline(SortableTabularInline):
@@ -11,16 +12,18 @@ class PlaceImageTabularInline(SortableTabularInline):
     extra = 1
     fields = (
         "image",
-        "current_image",
+        "get_current_image",
     )
-    readonly_fields = ("current_image",)
-    def current_image(self, instance):
+    readonly_fields = ("get_current_image",)
+
+    def get_current_image(self, instance):
         if instance.image:
-            return mark_safe(
-                '<img src="{}" style="max-height: 200px" />'.format(instance.image.url)
+            return format_html(
+                '<img src="{}" style="max-height: 200px" />', instance.image.url
             )
         return "-"
-    current_image.short_description = "Get preview"
+
+    get_current_image.short_description = "Get preview"
 
 
 @admin.register(Place)
@@ -28,6 +31,4 @@ class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
     fields = ("title", "description_short", "description_long", "latitude", "longitude")
     inlines = [PlaceImageTabularInline]
 
-    formfield_overrides = {
-        models.TextField: {'widget': TinyMCE()}
-    }
+    formfield_overrides = {models.TextField: {"widget": TinyMCE()}}

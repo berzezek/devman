@@ -1,5 +1,6 @@
 from django.urls import path
-from places.views import index, place_detail, place_detail_serializer
+
+from places.views import index, place_detail_serializer
 
 urlpatterns = [
     path("", index),

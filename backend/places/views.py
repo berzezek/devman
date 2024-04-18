@@ -1,7 +1,9 @@
-from django.shortcuts import render
 import json
-from .models import Place
-from places.utils import create_features
+
+from django.shortcuts import get_object_or_404, render
+
+from places.models import Place
+from places.utils import set_features
 
 
 def index(request):
@@ -16,7 +18,7 @@ def index(request):
     """
     places = Place.objects.all()
 
-    features = create_features(places, request)
+    features = set_features(places, request)
 
     geojson = json.dumps({"type": "FeatureCollection", "features": features})
 
@@ -34,18 +36,28 @@ def place_detail(request, place_id):
     Returns:
         HttpResponse: The HTTP response object containing the rendered place detail page.
     """
-    place = Place.objects.get(pk=place_id)
+    place = get_object_or_404(Place, pk=place_id)
 
     return render(request, "places/detail.html", {"place": place})
 
 
 def place_detail_serializer(request, place_id):
+    """
+    Serializes the details of a place.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+        place_id (int): The ID of the place.
+
+    Returns:
+        HttpResponse: The rendered response containing the serialized place data.
+    """
     place = Place.objects.get(pk=place_id)
-    place_images = place.placeimage_set.all()
-    images = [request.build_absolute_uri(image.image.url) for image in place_images]
 
-    # serialize the place
+    images = [
+        request.build_absolute_uri(image.image.url) for image in place.images.all()
+    ]
+
     place_data = {
         "title": place.title,
         "imgs": images,

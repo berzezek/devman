@@ -17,6 +17,11 @@
 * image (ImageField): Картинка места.
 * image_number (PositiveSmallIntegerField): Позиция изображения в списке.
 
+### Маршрутизаторы
+
+* /admin/ - административная панель Django.
+* /places/ - список всех мест.
+* /places/<int:place_id>/ - информация о конкретном месте.
 
 ### Административная панель
 #### Административная панель позволяет администраторам управлять местами и их изображениями. В административной панели реализовано следующее:
@@ -35,3 +40,6 @@
 * echo DEBUG=True >> .env  (or False for production)
 * python manage.py migrate
 * python manage.py runserver
+
+### DEMO
+* [Demo site](https://booltazavr.pythonanywhere.com)

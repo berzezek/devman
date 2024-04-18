@@ -63,7 +63,7 @@ def place_detail_serializer(request, place_id):
         "imgs": images,
         "description_short": place.description_short,
         "description_long": place.description_long,
-        "coordinates": {"lng": place.longitude, "lat": place.latitude},
+        "coordinates": {"lng": place.lng, "lat": place.lat},
     }
 
     return render(request, "places/serialize_detail.html", {"place_data": place_data})

@@ -28,7 +28,13 @@ class PlaceImageTabularInline(SortableTabularInline):
 
 @admin.register(Place)
 class PlaceAdmin(SortableAdminMixin, admin.ModelAdmin):
-    fields = ("title", "description_short", "description_long", "latitude", "longitude")
+    fields = ("title", "description_short", "description_long", "lat", "lng")
     inlines = [PlaceImageTabularInline]
+    search_fields = ["title"]
 
     formfield_overrides = {models.TextField: {"widget": TinyMCE()}}
+
+
+@admin.register(PlaceImage)
+class PlaceImageAdmin(admin.ModelAdmin):
+    raw_id_fields = ("place",)

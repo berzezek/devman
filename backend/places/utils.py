@@ -36,31 +36,34 @@ def set_features(places: list, request) -> list:
             "imgs": imgs,
             "description_short": place.description_short,
             "description_long": place.description_long,
-            "coordinates": {"lng": place.longitude, "lat": place.latitude},
+            "coordinates": {"lng": place.lng, "lat": place.lat},
         }
 
         # write the details to a json file
-        with open(
-            os.path.join(settings.BASE_DIR, f"static/assets/places/{place.pk}.json"),
-            "w",
-        ) as file:
-            file.write(json.dumps(details_url))
-            removed_path = file.name.replace(f"{settings.BASE_DIR}", "")
-            features.append(
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [
-                            place.latitude,
-                            place.longitude,
-                        ],
-                    },
-                    "properties": {
-                        "title": place.title,
-                        "placeId": place.pk,
-                        "detailsUrl": f"./{removed_path}",
-                    },
-                }
-            )
+        # with open(
+        #     os.path.join(settings.BASE_DIR, f"static/assets/places/{place.pk}.json"),
+        #     "w",
+        # ) as file:
+        #     file.write(json.dumps(details_url))
+        #     removed_path = file.name.replace(f"{settings.BASE_DIR}", "")
+        
+        # Ранее я сделал сохранение в файл для того чтобы не изменять код во фронтенде на получение detailUrl.
+        
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        place.lng,
+                        place.lat,
+                    ],
+                },
+                "properties": {
+                    "title": place.title,
+                    "placeId": place.pk,
+                    "detailsUrl": details_url,
+                },
+            }
+        )
     return features

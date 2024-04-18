@@ -258,13 +258,16 @@
       sidebarApp.loadingPlaceId = placeId;
 
       try {
-        let response = await fetch(detailsUrl);
+        /* let response = await fetch(detailsUrl);
 
         if (!response.ok){
           return;
         }
 
-        let data = await response.json();
+        let data = await response.json(); */
+
+        // Изменение в коде
+        const data = detailsUrl
 
         if (sidebarApp.loadingPlaceId != placeId){
           // Place loading was cancelled by user

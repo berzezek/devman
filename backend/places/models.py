@@ -3,16 +3,16 @@ from django.db import models
 
 class Place(models.Model):
     title = models.CharField(verbose_name="Наименование", max_length=255)
-    description_short = models.CharField(
-        verbose_name="Описание короткое", max_length=255, blank=True, null=True
+    description_short = models.TextField(
+        verbose_name="Описание короткое", blank=True, null=True
     )
     description_long = models.TextField(verbose_name="Описание длинное", blank=True, null=True)
-    latitude = models.FloatField(verbose_name="Широта", default=0.0)
-    longitude = models.FloatField(verbose_name="Долгота", default=0.0)
+    lat = models.FloatField(verbose_name="Широта", default=0.0)
+    lng = models.FloatField(verbose_name="Долгота", default=0.0)
 
     class Meta:
         ordering = ["pk"]
-        verbose_name = "Место"
+        verbose_name = "Место" 
         verbose_name_plural = "Места"
 
     def __str__(self):
